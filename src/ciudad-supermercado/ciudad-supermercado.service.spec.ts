@@ -60,67 +60,6 @@ describe('CiudadSupermercadoService', () => {
     expect(service).toBeDefined();
   });
 
-  it('addSupermarketToCity should add a supermarket to a city', async () => {
-    const nuevoSupermercado: SupermercadoEntity =
-      await supermercadoRepository.save({
-        nombre: faker.word.noun({ length: 11 }),
-        longitud: faker.number.int(),
-        latitud: faker.number.int(),
-        paginaWeb: faker.internet.url(),
-      });
-
-    const newAirline: CiudadEntity = await ciudadRepository.save({
-      nombre: faker.location.city(),
-      pais: 'Ecuador',
-      numeroHabitantes: faker.number.int(),
-    });
-
-    const result: CiudadEntity = await service.addSupermarketToCity(
-      newAirline.id,
-      nuevoSupermercado.id,
-    );
-
-    expect(result.supermercados.length).toBe(1);
-    expect(result.supermercados[0]).not.toBeNull();
-    expect(result.supermercados[0].nombre).toBe(nuevoSupermercado.nombre);
-    expect(result.supermercados[0].latitud).toBe(nuevoSupermercado.latitud);
-    expect(result.supermercados[0].longitud).toBe(nuevoSupermercado.longitud);
-    expect(result.supermercados[0].paginaWeb).toBe(nuevoSupermercado.paginaWeb);
-  });
-
-  it('addSupermarketToCity should thrown exception for an invalid supermarket', async () => {
-    const newAirline: CiudadEntity = await ciudadRepository.save({
-      nombre: faker.location.city(),
-      pais: 'Ecuador',
-      numeroHabitantes: faker.number.int(),
-      supermercados: listaSupermercados,
-    });
-
-    await expect(() =>
-      service.addSupermarketToCity(newAirline.id, '0'),
-    ).rejects.toHaveProperty(
-      'message',
-      'The supermarket with the given id was not found',
-    );
-  });
-
-  it('addSupermarketToCity should throw an exception for an invalid city', async () => {
-    const nuevoSupermercado: SupermercadoEntity =
-      await supermercadoRepository.save({
-        nombre: faker.word.noun({ length: 11 }),
-        longitud: faker.number.int(),
-        latitud: faker.number.int(),
-        paginaWeb: faker.internet.url(),
-      });
-
-    await expect(() =>
-      service.addSupermarketToCity('0', nuevoSupermercado.id),
-    ).rejects.toHaveProperty(
-      'message',
-      'The city with the given id was not found',
-    );
-  });
-
   it('findSupermarketFromCity should return supermarket by city', async () => {
     const supermercado: SupermercadoEntity = listaSupermercados[0];
     const supermercadoAlmacenado: SupermercadoEntity =
@@ -287,6 +226,67 @@ describe('CiudadSupermercadoService', () => {
     ).rejects.toHaveProperty(
       'message',
       'The supermarket with the given id is not associated to the city',
+    );
+  });
+
+  it('addSupermarketToCity should add a supermarket to a city', async () => {
+    const nuevoSupermercado: SupermercadoEntity =
+      await supermercadoRepository.save({
+        nombre: faker.word.noun({ length: 11 }),
+        longitud: faker.number.int(),
+        latitud: faker.number.int(),
+        paginaWeb: faker.internet.url(),
+      });
+
+    const nuevaCiudad: CiudadEntity = await ciudadRepository.save({
+      nombre: faker.location.city(),
+      pais: 'Ecuador',
+      numeroHabitantes: faker.number.int(),
+    });
+
+    const result: CiudadEntity = await service.addSupermarketToCity(
+      nuevaCiudad.id,
+      nuevoSupermercado.id,
+    );
+
+    expect(result.supermercados.length).toBe(1);
+    expect(result.supermercados[0]).not.toBeNull();
+    expect(result.supermercados[0].nombre).toBe(nuevoSupermercado.nombre);
+    expect(result.supermercados[0].latitud).toBe(nuevoSupermercado.latitud);
+    expect(result.supermercados[0].longitud).toBe(nuevoSupermercado.longitud);
+    expect(result.supermercados[0].paginaWeb).toBe(nuevoSupermercado.paginaWeb);
+  });
+
+  it('addSupermarketToCity should thrown exception for an invalid supermarket', async () => {
+    const nuevaCiudad: CiudadEntity = await ciudadRepository.save({
+      nombre: faker.location.city(),
+      pais: 'Ecuador',
+      numeroHabitantes: faker.number.int(),
+      supermercados: listaSupermercados,
+    });
+
+    await expect(() =>
+      service.addSupermarketToCity(nuevaCiudad.id, '0'),
+    ).rejects.toHaveProperty(
+      'message',
+      'The supermarket with the given id was not found',
+    );
+  });
+
+  it('addSupermarketToCity should throw an exception for an invalid city', async () => {
+    const nuevoSupermercado: SupermercadoEntity =
+      await supermercadoRepository.save({
+        nombre: faker.word.noun({ length: 11 }),
+        longitud: faker.number.int(),
+        latitud: faker.number.int(),
+        paginaWeb: faker.internet.url(),
+      });
+
+    await expect(() =>
+      service.addSupermarketToCity('0', nuevoSupermercado.id),
+    ).rejects.toHaveProperty(
+      'message',
+      'The city with the given id was not found',
     );
   });
 });
