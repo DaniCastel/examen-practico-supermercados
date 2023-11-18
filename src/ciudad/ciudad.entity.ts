@@ -19,7 +19,7 @@ export class CiudadEntity {
   pais: string;
 
   @Column()
-  numeroHabitantes: Date;
+  numeroHabitantes: number;
 
   @ManyToMany(() => SupermercadoEntity, (supermercado) => supermercado.ciudades)
   @JoinTable()
