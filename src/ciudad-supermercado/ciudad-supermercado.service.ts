@@ -19,7 +19,7 @@ export class CiudadSupermercadoService {
     private readonly supermercadoRepository: Repository<SupermercadoEntity>,
   ) {}
 
-  async addSupermercadoCiudad(
+  async addSupermarketToCity(
     ciudadId: string,
     supermercadoId: string,
   ): Promise<CiudadEntity> {
@@ -48,7 +48,7 @@ export class CiudadSupermercadoService {
     return await this.ciudadRepository.save(ciudad);
   }
 
-  async findSupermercadoByCiudadIdSupermercadoId(
+  async findSupermarketFromCity(
     ciudadId: string,
     supermercadoId: string,
   ): Promise<SupermercadoEntity> {
@@ -85,7 +85,7 @@ export class CiudadSupermercadoService {
     return supermercado;
   }
 
-  async findSupermercadosByCiudad(
+  async findSupermarketsFromCity(
     ciudadId: string,
   ): Promise<SupermercadoEntity[]> {
     const ciudad: CiudadEntity = await this.ciudadRepository.findOne({
@@ -101,7 +101,7 @@ export class CiudadSupermercadoService {
     return ciudad.supermercados;
   }
 
-  async associateSupermercadosCiudad(
+  async updateSupermarketsFromCity(
     ciudadId: string,
     supermercados: SupermercadoEntity[],
   ): Promise<CiudadEntity> {
@@ -132,7 +132,7 @@ export class CiudadSupermercadoService {
     return await this.ciudadRepository.save(ciudad);
   }
 
-  async deleteSupermercadoCiudad(ciudadId: string, supermercadoId: string) {
+  async deleteSupermarketFromCity(ciudadId: string, supermercadoId: string) {
     const supermercado: SupermercadoEntity =
       await this.supermercadoRepository.findOne({
         where: { id: supermercadoId },
